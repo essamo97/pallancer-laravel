@@ -4,6 +4,7 @@ namespace App\Providers;
 
 use Illuminate\Support\ServiceProvider;
 use Illuminate\Support\Facades\Schema;
+use Illuminate\Support\Facades\Validator;
 
 class AppServiceProvider extends ServiceProvider
 {
@@ -15,6 +16,7 @@ class AppServiceProvider extends ServiceProvider
     public function register()
     {
         //
+
     }
 
     /**
@@ -25,5 +27,13 @@ class AppServiceProvider extends ServiceProvider
     public function boot()
     {
         Schema::defaultStringLength(191);
+        Validator::extend('filter', function ($attribute, $value, $params) {
+            foreach ($params as $words) {
+                if (stripos($value, $words) !== false) {
+                    return false;
+                }
+            }
+            return true;
+        }, 'Ivalid word!');
     }
 }

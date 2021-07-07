@@ -40,4 +40,10 @@ class User extends Authenticatable
     protected $casts = [
         'email_verified_at' => 'datetime',
     ];
+    public function profile()
+    {
+        return $this->hasOne(Profile::class, 'user_id', 'id')->withDefault([
+            'first_name' => 'no profile'
+        ]);
+    }
 }
